@@ -1,31 +1,26 @@
 .sidebar {
     min-height: 100vh;
-    background: rgb(35, 35, 35);
+    background: rgb(29, 29, 29);
     box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .sidebar .nav-link {
     color: rgba(255, 255, 255, 0.8);
-    padding: 7px 10px;
+    padding: 5px 10px;
     border-radius: 8px;
-    margin: 1px 0px;
+    margin: 2px 0px;
     transition: all 0.3s ease;
 }
 
 .sidebar .nav-link:hover {
-    color: #000000;
-    background: rgb(255, 153, 0);
+    color: #fff;
+    background: rgba(255, 255, 255, 0.1);
     transform: translateX(1px);
 }
 
-.sidebar .nav-link.active, .sidebar .nav-link.subcategory-active {
-    color: #000000;
-    background: rgb(255, 255, 255);
-}
-
-.sidebar .nav-link.category-active, .sidebar .nav-link.category-active:focus, .sidebar .nav-link.category-active:active {
-    color: #000000;
-    background: rgb(255, 153, 0);
+.sidebar .nav-link.active {
+    color: #fff;
+    background: rgb(203, 132, 0);
 }
 
 .brand-logo {
@@ -33,7 +28,7 @@
     font-size: 1.5rem;
     font-weight: bold;
     text-decoration: none;
-    padding: 10px;
+    padding: 0px;
     display: block;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     margin-bottom: 20px;
@@ -51,14 +46,14 @@
 }
 
 .btn-primary {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: rgb(29, 29, 29);
     border: none;
     border-radius: 8px;
     padding: 10px 20px;
 }
 
 .btn-primary:hover {
-    background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+    background: rgb(29, 29, 29);
     transform: translateY(-2px);
 }
 
@@ -69,7 +64,7 @@
 }
 
 .table th {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: rgb(29, 29, 29);
     color: white;
     border: none;
 }
@@ -109,12 +104,4 @@
     color: #667eea;
     font-size: 1.5rem;
     padding: 10px;
-}
-
-.transition-arrow {
-    transition: transform 0.3s ease;
-}
-
-.rotate-left {
-    transform: rotate(-90deg);
 }

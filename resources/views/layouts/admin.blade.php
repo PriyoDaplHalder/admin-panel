@@ -1,55 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Admin Panel')</title>
-
-    <!-- bootstrap stylesheet CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome icons -->
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <!-- Datatables css -->
+    <!-- DataTables CSS -->
     <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet">
-    <link href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.bootstrap5.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.bootstrap5.min.js" rel="stylesheet">
     <!-- Custom CSS -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    
     @stack('styles')
-
 </head>
-
 <body>
     <div class="container-fluid">
         <div class="row">
-            <!-- sidebar -->
+            <!-- Sidebar -->
             <nav class="col-md-3 col-lg-2 d-md-block sidebar collapse">
-                <div class="position-sticky">
-                    <a href="{{ route('dashboard') }}" class="brand-logo">
-                        Admin Panel
+                <div class="position-sticky pt-3">
+                    <a href="{{ route('admin.dashboard') }}" class="brand-logo">
+                        <i class="fas fa-tachometer-alt me-2"></i>Admin Panel
                     </a>
-
+                    
                     <ul class="nav flex-column">
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}"
-                                href="{{ route('dashboard') }}">
+                            <a class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}" href="{{ route('admin.dashboard') }}">
                                 <i class="fas fa-home me-2"></i>Dashboard
                             </a>
                         </li>
-
+                        
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('users.*') ? 'category-active' : '' }}" data-bs-toggle="collapse" href="#usersMenu" role="button"
-                                aria-expanded="{{ request()->routeIs('users.*') ? 'true' : 'false' }}" aria-controls="usersMenu">
+                            <a class="nav-link" data-bs-toggle="collapse" href="#usersMenu" role="button" aria-expanded="false" aria-controls="usersMenu">
                                 <i class="fas fa-users me-2"></i>Users
-                                <i class="fas fa-chevron-down float-end mt-1 transition-arrow" id="usersMenuArrow"></i>
+                                <i class="fas fa-chevron-down float-end mt-1"></i>
                             </a>
-                            <div class="collapse {{ request()->routeIs('users.*') ? 'show' : '' }}"
-                                id="usersMenu">
+                            <div class="collapse {{ request()->routeIs('admin.users.*') ? 'show' : '' }}" id="usersMenu">
                                 <ul class="nav flex-column ms-3">
                                     <li class="nav-item">
-                                        <a class="nav-link {{ request()->routeIs('users.index') ? 'active subcategory-active' : '' }}"
-                                            href="{{ route('users.index') }}">
+                                        <a class="nav-link {{ request()->routeIs('admin.users.index') ? 'active' : '' }}" href="{{ route('admin.users.index') }}">
                                             <i class="fas fa-list me-2"></i>User List
                                         </a>
                                     </li>
@@ -59,11 +53,23 @@
                     </ul>
                 </div>
             </nav>
+            
+            <!-- Main content -->
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 main-content">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
+                    <button class="navbar-toggler d-md-none" type="button" onclick="toggleSidebar()">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    @yield('header')
+                </div>
+                
+                @yield('content')
+            </main>
         </div>
-        @yield('content')
     </div>
+    
     <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
     <!-- DataTables JS -->
@@ -77,25 +83,26 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+    
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            var usersMenu = document.getElementById('usersMenu');
-            var arrow = document.getElementById('usersMenuArrow');
-            if (usersMenu && arrow) {
-                var updateArrow = function () {
-                    if (usersMenu.classList.contains('show')) {
-                        arrow.style.transform = 'rotate(0deg)'; // Down
-                    } else {
-                        arrow.style.transform = 'rotate(-90deg)'; // Side
-                    }
-                };
-                usersMenu.addEventListener('shown.bs.collapse', updateArrow);
-                usersMenu.addEventListener('hidden.bs.collapse', updateArrow);
-                updateArrow();
+        function toggleSidebar() {
+            const sidebar = document.querySelector('.sidebar');
+            sidebar.classList.toggle('show');
+        }
+        
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', function(event) {
+            const sidebar = document.querySelector('.sidebar');
+            const toggleBtn = document.querySelector('.navbar-toggler');
+            
+            if (window.innerWidth <= 767.98 && 
+                !sidebar.contains(event.target) && 
+                !toggleBtn.contains(event.target)) {
+                sidebar.classList.remove('show');
             }
         });
     </script>
-
+    
+    @stack('scripts')
 </body>
-
 </html>
