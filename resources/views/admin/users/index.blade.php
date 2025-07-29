@@ -298,6 +298,21 @@ $(document).ready(function() {
 
     $('#colvisBtn').on('click', function() {
         table.button('.buttons-colvis').trigger();
+        
+        // Add custom styling after dropdown appears
+        setTimeout(function() {
+            $('.dt-button-collection button').each(function() {
+                var $btn = $(this);
+                var text = $btn.text().trim();
+                var isActive = $btn.hasClass('active');
+                
+                if (isActive) {
+                    $btn.html('<i class="fas fa-check text-success me-2"></i>' + text);
+                } else {
+                    $btn.html('<i class="fas fa-eye-slash text-muted me-2"></i>' + text);
+                }
+            });
+        }, 100);
     });
 });
 

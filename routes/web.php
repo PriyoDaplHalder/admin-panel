@@ -22,22 +22,27 @@ use Illuminate\Support\Facades\Auth;
 
 // Authentication Routes
 Route::get('/', function () {
+    return redirect()->route('login');
+});
+
+Route::get('/login', function () {
     return view('auth.login');
-})->name('login');
-Route::post('login', function (\Illuminate\Http\Request $request) {
+})->name('login')->middleware('guest');
+
+Route::post('/login', function (\Illuminate\Http\Request $request) {
     $credentials = $request->only('email', 'password');
     if (Auth::attempt($credentials)) {
         $request->session()->regenerate();
         return redirect()->intended('admin/dashboard');
     }
     return back()->withErrors(['email' => 'Invalid credentials'])->withInput();
-})->name('login.submit');
-Route::post('logout', function (\Illuminate\Http\Request $request) {
+})->name('login.submit')->middleware('guest');
+Route::post('/logout', function (\Illuminate\Http\Request $request) {
     Auth::logout();
     $request->session()->invalidate();
     $request->session()->regenerateToken();
-    return redirect('/login');
-})->name('logout');
+    return redirect()->route('login');
+})->name('logout')->middleware('auth');
 
 // Protect admin routes
 Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
