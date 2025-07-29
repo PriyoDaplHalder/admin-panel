@@ -16,12 +16,12 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
 // Authentication Routes
-Route::get('login', function () {
+Route::get('/', function () {
     return view('auth.login');
 })->name('login');
 Route::post('login', function (\Illuminate\Http\Request $request) {
