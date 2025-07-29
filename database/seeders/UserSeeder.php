@@ -21,53 +21,43 @@ class UserSeeder extends Seeder
                 'email' => 'john@example.com',
                 'password' => Hash::make('password'),
                 'created_at' => now()->subDays(30),
+                'active' => 1,
             ],
             [
                 'name' => 'Jane Smith',
                 'email' => 'jane@example.com',
                 'password' => Hash::make('password'),
                 'created_at' => now()->subDays(25),
+                'active' => 1,
             ],
             [
                 'name' => 'Mike Johnson',
                 'email' => 'mike@example.com',
                 'password' => Hash::make('password'),
                 'created_at' => now()->subDays(20),
+                'active' => 1,
             ],
             [
                 'name' => 'Sarah Wilson',
                 'email' => 'sarah@example.com',
                 'password' => Hash::make('password'),
                 'created_at' => now()->subDays(15),
+                'active' => 1,
             ],
-            [
-                'name' => 'David Brown',
-                'email' => 'david@example.com',
-                'password' => Hash::make('password'),
-                'created_at' => now()->subDays(10),
-            ],
-            [
-                'name' => 'Lisa Davis',
-                'email' => 'lisa@example.com',
-                'password' => Hash::make('password'),
-                'created_at' => now()->subDays(5),
-            ],
-            [
-                'name' => 'Tom Anderson',
-                'email' => 'tom@example.com',
-                'password' => Hash::make('password'),
-                'created_at' => now()->subDays(3),
-            ],
-            [
-                'name' => 'Emma Taylor',
-                'email' => 'emma@example.com',
-                'password' => Hash::make('password'),
-                'created_at' => now()->subDays(1),
-            ]
         ];
-
         foreach ($users as $user) {
-            User::create($user);
+            User::updateOrCreate(
+                ['email' => $user['email']],
+                $user
+            );
         }
+        // Admin user
+        User::updateOrCreate([
+            'email' => 'admin@company.com',
+        ], [
+            'name' => 'Admin',
+            'password' => Hash::make('Admin#123'),
+            'active' => 1,
+        ]);
     }
 }

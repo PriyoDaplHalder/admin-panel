@@ -27,6 +27,10 @@
                     <a href="{{ route('admin.dashboard') }}" class="brand-logo">
                         <i class="fas fa-tachometer-alt me-2"></i>Admin Panel
                     </a>
+                    <form method="POST" action="{{ route('logout') }}" class="mt-3">
+                        @csrf
+                        <button type="submit" class="btn btn-outline-danger w-100">Logout</button>
+                    </form>
                     
                     <ul class="nav flex-column">
                         <li class="nav-item">
