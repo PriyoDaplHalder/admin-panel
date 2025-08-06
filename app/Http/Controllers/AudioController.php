@@ -24,11 +24,6 @@ class AudioController extends Controller
                 'pcm_data' => 'nullable|array',
                 'pcm_data.*' => 'numeric' // Accept float or int values
             ]);
-
-            // Optional: Store in database
-            // $this->storeWaveform($validated);
-
-            // Optional: Apply server-side processing
             $processedData = $this->processWaveformData($validated);
 
             return response()->json([
