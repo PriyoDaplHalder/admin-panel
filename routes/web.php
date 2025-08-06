@@ -16,9 +16,12 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+Route::get('/welcome', function () {
+    return view('welcome');
+});
+Route::get('/audio-processor', function () {
+    return view('audio-processor');
+});
 
 // Authentication Routes
 Route::get('/', function () {
